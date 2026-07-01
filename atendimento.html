@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QBonita Festa | Atendimento</title>
+    <style>
+        body {
+            background-color: #0d0d0d; /* Fundo preto elegante */
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px; /* Espaçamento igual entre os elementos */
+        }
+
+        .logo {
+            max-width: 150px; /* Limita o tamanho da logo */
+            height: auto;
+            border-radius: 50%; /* Mantém arredondada caso usem a foto do perfil */
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d4af37; /* Dourado combinando com a marca */
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            animation: spin 1s linear infinite;
+        }
+
+        p {
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+       
+        <img src="logo.jpg" alt="QBonita Festa" class="logo">
+        
+        <div class="loader"></div>
+        
+        <p>Redirecionando para uma de nossas vendedoras...</p>
+    </div>
+
+    <!-- Conecta o arquivo de lógica -->
+    <script src="script.js"></script>
+</body>
+</html>
