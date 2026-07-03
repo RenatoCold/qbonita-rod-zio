@@ -5,65 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QBonita Festa | Atendimento</title>
     <style>
-        body {
-            background-color: #0d0d0d; /* Fundo preto elegante */
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        
-        .container {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px; /* Espaçamento igual entre os elementos */
-        }
-
-        .logo {
-            max-width: 150px; /* Limita o tamanho da logo */
-            height: auto;
-            border-radius: 50%; /* Mantém arredondada caso usem a foto do perfil */
-        }
-
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #d4af37; /* Dourado combinando com a marca */
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            animation: spin 1s linear infinite;
-        }
-
-        p {
-            font-size: 16px;
-            letter-spacing: 0.5px;
-            opacity: 0.9;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        body { background-color: #0d0d0d; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .loader { border: 5px solid #333; border-top: 5px solid #d4af37; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <div class="loader"></div>
 
-    <div class="container">
-       
-        <img src="logo.jpg" alt="QBonita Festa" class="logo">
-        
-        <div class="loader"></div>
-        
-        <p>Redirecionando para uma de nossas vendedoras...</p>
-    </div>
+    <script>
+        // Lista das 17 vendedoras
+        const vendedoras = [
+            "5511950881377", "5511914633120", "5511943344798", "5511969694794", 
+            "5511975431235", "5511925605361", "5511916448269", "5511975888151", 
+            "5511937470717", "5511933316504", "5511933316682", "5511910349490", 
+            "5511980320702", "5511995015242", "5511943318586", "5511932957376", 
+            "5511910982867"
+        ];
 
-    <!-- Conecta o arquivo de lógica -->
-    <script src="script.js"></script>
+        const mensagem = encodeURIComponent("Olá! Vi o vestido no Instagram e gostaria de mais informações, disponibilidade de tamanhos e valores. Poderia me ajudar?");
+
+        function redirecionar() {
+            // A mágica: usa o tempo atual em minutos para definir a vendedora
+            // Isso garante que o rodízio mude a cada minuto, de forma estável
+            const minutos = Math.floor(Date.now() / 60000);
+            const indice = minutos % vendedoras.length;
+            
+            window.location.replace(`https://wa.me/${vendedoras[indice]}?text=${mensagem}`);
+        }
+
+        // Aguarda 2 segundos para dar o charme do carregamento e redireciona
+        window.onload = () => setTimeout(redirecionar, 2000);
+    </script>
 </body>
 </html>
