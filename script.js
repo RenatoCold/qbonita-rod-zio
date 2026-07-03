@@ -4,14 +4,29 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// 2. Lista de vendedoras da sua tia (Coloque os números REAIS aqui)
+// 2. Lista de vendedoras da loja
 const vendedoras = [
-    "5511999999991", // Vendedora 0
-    "5511999999992", // Vendedora 1
-    "5511999999993"  // Vendedora 2
+    "5511950881377", // Gisele
+    "5511914633120", // Cilene
+    "5511943344798", // Rilza
+    "5511969694794", // Geisa
+    "5511975431235", // Vanusa
+    "5511925605361", // Débora
+    "5511916448269", // Iverly
+    "5511975888151", // Luciana
+    "5511937470717", // Vânia
+    "5511933316504", // Regina
+    "5511933316682", // Andressa
+    "5511910349490", // Geovana
+    "5511980320702", // Vera
+    "5511995015242", // Tifany
+    "5511943318586", // Valda
+    "5511932957376", // Tiana
+    "5511910982867"  // Caixa
 ];
 
-const mensagemTexto = "Olá! Vi o vestido no Instagram e gostaria de mais informações.";
+// 3. Mensagem que será enviada no WhatsApp
+const mensagemTexto = "Olá! Vi o vestido no Instagram e gostaria de mais informações, disponibilidade de tamanhos e valores. Poderia me ajudar?";
 const mensagemCodificada = encodeURIComponent(mensagemTexto);
 
 // Função Fallback: Atendimento aleatório caso o banco caia ou demore
@@ -23,19 +38,18 @@ function redirecionarFallback() {
 
 // 4. Função principal do Rodízio com proteção de Timeout
 async function rodizioInteligente() {
-    // Cria um timer que cancela a requisição se demorar mais de 3 segundos
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
 
     try {
-        // Busca a linha no banco passando o sinal de cancelamento por tempo
+        // Busca a linha no banco com suporte ao AbortSignal
         const { data, error } = await supabase
             .from('controle_rodizio')
-            .select('ultimo_indice')
+            .select('ultimo_indice', { abortSignal: controller.signal })
             .eq('id', 1)
-            .single(), { abortSignal: controller.signal };
+            .single();
 
-        clearTimeout(timeoutId); // Banco respondeu rápido, cancela o temporizador de erro
+        clearTimeout(timeoutId);
 
         if (error) throw error;
 
@@ -52,12 +66,13 @@ async function rodizioInteligente() {
         window.location.replace(`https://wa.me/${numeroEscolhido}?text=${mensagemCodificada}`);
 
     } catch (err) {
-        // Entra aqui se o Supabase der erro OU se estourar o tempo de 3 segundos
         clearTimeout(timeoutId);
+        console.error("Erro no rodízio:", err);
         redirecionarFallback();
     }
 }
 
+// Inicia o processo após carregar a página
 window.onload = function() {
     setTimeout(rodizioInteligente, 2500); 
 };
